@@ -12,7 +12,9 @@
         </Menu>
       </div>
       <div class="view__content">
+      <transition name="fade">
         <router-view/>
+      </transition>
       </div>
     </div>
   </div>
@@ -58,6 +60,14 @@ export default {
 };
 </script>
 <style scoped>
+.fade-enter-active, .fade-leave-active {
+  transition: all 0.5s;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
+  position: absolute;
+  transform: perspective(800px) scale(0.5) translate(0px, 400px) rotateY(0deg) rotateX(10000deg);
+}
 .layout__warpper {
   height: 100%;
   width: 100%;
