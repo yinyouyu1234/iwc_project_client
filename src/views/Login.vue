@@ -11,7 +11,7 @@
         </FormItem>
       </Form>
       <div class="button__box">
-        <Button type="primary" long>login</Button>
+        <Button type="primary" long @click="handleLogin">login</Button>
       </div>
     </div>
   </div>
@@ -25,6 +25,11 @@ export default {
         username: 'dian0828',
         passworld: 'dian0828'
       }
+    }
+  },
+  methods: {
+    handleLogin () {
+      this.$router.push('/index/express')
     }
   }
 }
@@ -45,7 +50,7 @@ export default {
   top: 50%;
   left: 5%;
   transform: translate(0%, -50%);
-  background: #fff;
+  background: rgba(255, 255, 255, 0.4);
 }
 .button__box {
   text-align: center;

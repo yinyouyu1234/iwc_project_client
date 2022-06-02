@@ -29,7 +29,7 @@ export default {
         },
         {
           label: "业务员管理",
-          path: "/index",
+          path: "/index/salesman",
         },
         {
           label: "货品信息",
@@ -39,12 +39,16 @@ export default {
           label: "数据采集",
           path: "/index/dataCollect",
         },
+        {
+          label: "库存管理",
+          path: "/index/storeManage",
+        },
       ],
     };
   },
   methods: {
     logout() {
-
+      this.$router.push('/');
     },
     goPage(path) {
       this.$router.push(path);

@@ -28,6 +28,11 @@ const routes = [
         path: 'dataCollect',
         name: 'DataCollect',
         component: () => import(/* webpackChunkName: "DataCollect" */ '../views/dataCollect/DataCollect.vue'), 
+      },
+      {
+        path: 'salesman',
+        name: 'Salesman',
+        component: () => import(/* webpackChunkName: "salesman" */ '../views/salesman/Salesman.vue'), 
       }
     ]
   }

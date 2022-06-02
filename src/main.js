@@ -5,7 +5,9 @@ import store from './store'
 import iView from 'iview';
 import 'iview/dist/styles/iview.css';
 import './common/style.css';
-Vue.config.productionTip = false
+import request from './utils/request.js';
+Vue.config.productionTip = false;
+Vue.prototype.$axios = request;
 Vue.use(iView);
 new Vue({
   router,
