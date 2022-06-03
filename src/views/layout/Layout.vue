@@ -45,6 +45,18 @@ export default {
           label: "库存管理",
           path: "/index/storeManage",
         },
+        {
+          label: "司机管理",
+          path: "/index/driverManage",
+        },
+        {
+          label: "分拣组管理",
+          path: "/index/sorterGroupManage",
+        },
+        {
+          label: "分拣员管理",
+          path: "/index/sorterManage",
+        },
       ],
     };
   },
@@ -61,12 +73,12 @@ export default {
 </script>
 <style scoped>
 .fade-enter-active, .fade-leave-active {
-  transition: all 0.5s;
+  transition: all .3s;
 }
 .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
   opacity: 0;
   position: absolute;
-  transform: perspective(800px) scale(0.5) translate(0px, 400px) rotateY(0deg) rotateX(10000deg);
+  transform: perspective(800px) scale(0.5) translate(0px, 400px) rotateY(0deg) rotateX(90deg);
 }
 .layout__warpper {
   height: 100%;

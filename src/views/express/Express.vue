@@ -10,6 +10,8 @@
           >{{ item.label }}</Option
         >
       </Select>
+      编号：
+      <Input v-model="value" style="width: 200px" />
       名称：
       <Input v-model="value" style="width: 200px" />
       负责人：
@@ -61,6 +63,9 @@
               >{{ item.label }}</Option
             >
           </Select>
+        </FormItem>
+        <FormItem label="编号" prop="username">
+          <Input v-model="modalInfo.data.username"></Input>
         </FormItem>
         <FormItem label="名称" prop="username">
           <Input v-model="modalInfo.data.username"></Input>
@@ -141,6 +146,10 @@ export default {
           key: "name",
         },
         {
+          title: "编号",
+          key: "name",
+        },
+        {
           title: "名称",
           key: "name",
         },
@@ -168,6 +177,7 @@ export default {
           title: "操作",
           slot: "action",
           key: "action",
+          width: 200
         },
       ],
       tableData: [

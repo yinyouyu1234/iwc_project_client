@@ -1,22 +1,30 @@
 <template>
   <div class="salesman__warpper">
+    <div class="chart__warpper">
+      <div class="weight__chart--box">
+        <div class="time__filter">
+          <div>驿站出货重量</div>
+          <div>
+            <DatePicker type="daterange" placement="bottom-end" placeholder="Select date" style="width: 200px"></DatePicker>
+          </div>
+        </div>
+        <div class="weight__chart"></div>
+      </div>
+      <div class="weight__chart--box">
+        <div class="time__filter">
+          <div>黑料率</div>
+          <div>
+            <DatePicker type="daterange" placement="bottom-end" placeholder="Select date" style="width: 200px"></DatePicker>
+          </div>
+        </div>
+        <div class="heiliao__chart"></div>
+      </div>
+    </div>
     <div class="filter__box">
-      渠道：
-      <Select v-model="model1" style="width: 200px">
-        <Option
-          v-for="item in googsSourceOption"
-          :value="item.value"
-          :key="item.value"
-          >{{ item.label }}</Option
-        >
-      </Select>
-      名称：
+      姓名：
       <Input v-model="value" style="width: 200px" />
-      负责人：
+      驿站编号：
       <Input v-model="value" style="width: 200px" />
-      业务员：
-      <Input v-model="value" style="width: 200px" />
-
       <Button style="margin-left: 10px">搜索</Button>
       <Button style="margin-left: 10px" type="primary" @click="addItem"
         >新增</Button
@@ -45,14 +53,14 @@
     </div>
     <Modal
       v-model="modalInfo.status"
-      title="编辑渠道信息"
+      title="编辑业务员信息"
       width="800"
       @on-ok="ok"
       @on-cancel="cancel"
       :mask-closable="false"
     >
       <Form :label-width="120" style="padding: 30px 30px 0px 0">
-        <FormItem label="渠道" prop="username">
+        <!-- <FormItem label="渠道" prop="username">
           <Select v-model="model1" style="width: 100%">
             <Option
               v-for="item in googsSourceOption"
@@ -61,31 +69,40 @@
               >{{ item.label }}</Option
             >
           </Select>
-        </FormItem>
-        <FormItem label="名称" prop="username">
+        </FormItem> -->
+        <FormItem label="姓名" prop="username">
           <Input v-model="modalInfo.data.username"></Input>
         </FormItem>
-        <FormItem label="中文地址" prop="password">
+        <FormItem label="性别" prop="password">
+            <RadioGroup v-model="phone">
+              <Radio label="apple">
+                  <span>男</span>
+              </Radio>
+              <Radio label="android">
+                  <span>女</span>
+              </Radio>
+          </RadioGroup>
+        </FormItem>
+        <FormItem label="电话" prop="password">
           <Input v-model="modalInfo.data.username"></Input>
         </FormItem>
-        <FormItem label="坐标" prop="password">
+        <FormItem label="备注" prop="password">
           <Input v-model="modalInfo.data.username"></Input>
         </FormItem>
-        <FormItem label="渠道负责人" prop="password">
-          <Input v-model="modalInfo.data.username"></Input>
+        <FormItem label="入职时间" prop="password">
+          <DatePicker type="date" placeholder="Select date" style="width: 200px"></DatePicker>
         </FormItem>
-        <FormItem label="渠道负责人电话" prop="password">
-          <Input v-model="modalInfo.data.username"></Input>
+        <FormItem label="离职时间" prop="password">
+          <DatePicker type="date" placeholder="Select date" style="width: 200px"></DatePicker>
         </FormItem>
-        <FormItem label="业务员" prop="password">
-          <Select style="width: 100%" v-model="modalInfo.data.username">
-            <Option
-              v-for="item in salesmanOption"
-              :value="item.value"
-              :key="item.value"
-              >{{ item.label }}</Option
-            >
-          </Select>
+        <FormItem label="负责驿站" prop="password">
+          <Transfer
+            :titles="['所有驿站', '选中驿站']"
+            :data="data2"
+            :target-keys="targetKeys2"
+            filterable
+            :filter-method="filterMethod"
+            @on-change="handleChange2"></Transfer>
         </FormItem>
       </Form>
     </Modal>
@@ -106,10 +123,13 @@
   </div>
 </template>
 <script>
+import * as echarts from 'echarts';
 export default {
   name: "salesman",
   data() {
     return {
+      data2: this.getMockData(),
+      targetKeys2: this.getTargetKeys(),
       total: 100,
       googsSourceOption: [
         {
@@ -137,11 +157,7 @@ export default {
       },
       columns: [
         {
-          title: "渠道",
-          key: "name",
-        },
-        {
-          title: "名称",
+          title: "姓名",
           key: "name",
         },
         {
@@ -149,25 +165,18 @@ export default {
           key: "age",
         },
         {
-          title: "负责人",
+          title: "电话",
           key: "address",
         },
         {
-          title: "联系电话",
-          key: "address",
-        },
-        {
-          title: "业务员",
-          key: "address",
-        },
-        {
-          title: "业务员电话",
+          title: "管辖驿站",
           key: "address",
         },
         {
           title: "操作",
           slot: "action",
           key: "action",
+          width: 200
         },
       ],
       tableData: [
@@ -180,7 +189,82 @@ export default {
       ],
     };
   },
+  mounted () {
+    setTimeout(() => {
+      this.createWeightChart();
+      this.heiLiaoChart();
+    }, 1000)
+  },
   methods: {
+                getMockData () {
+                let mockData = [];
+                for (let i = 1; i <= 20; i++) {
+                    mockData.push({
+                        key: i.toString(),
+                        label: 'Content ' + i,
+                        description: 'The desc of content  ' + i,
+                        disabled: Math.random() * 3 < 1
+                    });
+                }
+                return mockData;
+            },
+            getTargetKeys () {
+                return this.getMockData()
+                        .filter(() => Math.random() * 2 > 1)
+                        .map(item => item.key);
+            },
+            handleChange2 (newTargetKeys) {
+                this.targetKeys2 = newTargetKeys;
+            },
+            filterMethod (data, query) {
+                return data.label.indexOf(query) > -1;
+            },
+    heiLiaoChart () {
+      const heiliao__chart = echarts.init(document.querySelector('.heiliao__chart'));
+      const option = {
+        xAxis: {
+          type: 'category',
+          data: ['张三', '张三', '张三', '张三', '张三', '张三', '张三']
+        },
+        yAxis: {
+          type: 'value'
+        },
+        series: [
+          {
+            data: [120, 200, 150, 80, 70, 110, 130],
+            type: 'bar',
+            showBackground: true,
+            backgroundStyle: {
+              color: 'rgba(180, 180, 180, 0.2)'
+            }
+          }
+        ]
+      };
+      heiliao__chart.setOption(option);
+    },
+    createWeightChart () {
+      const weight__chart = echarts.init(document.querySelector('.weight__chart'));
+      const option = {
+        xAxis: {
+          type: 'category',
+          data: ['张三', '张三', '张三', '张三', '张三', '张三', '张三']
+        },
+        yAxis: {
+          type: 'value'
+        },
+        series: [
+          {
+            data: [120, 200, 150, 80, 70, 110, 130],
+            type: 'bar',
+            showBackground: true,
+            backgroundStyle: {
+              color: 'rgba(180, 180, 180, 0.2)'
+            }
+          }
+        ]
+      };
+      weight__chart.setOption(option);
+    },
     deleteSumbit() {
       this.deleteModal.status = false;
     },
@@ -199,10 +283,30 @@ export default {
   },
 };
 </script>
-<style>
+<style scoped>
 .salesman__warpper {
 }
-.filter__box {
+.chart__warpper {
+  height: 400px;
+  width: 100%;
+  display: flex;
+}
+.time__filter {
+  display: flex;
+  justify-content: space-between;
+  height: 40px;
+  line-height: 40px;
+  padding: 0 20px;
+}
+.weight__chart--box {
+  height: 100%;
+  flex: 1;
+}
+.weight__chart {
+  height: 80%;
+}
+.heiliao__chart {
+  height: 80%;
 }
 .page__tools {
   background: #fff;

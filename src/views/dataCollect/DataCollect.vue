@@ -1,8 +1,23 @@
 <template>
   <div class="dataCollect__warpper">
+    <div style="padding: 10px; background: #fff">
+      日期选择：<DatePicker type="daterange" placement="bottom-end" placeholder="Select date" style="width: 200px"></DatePicker>
+      渠道选择：<Select v-model="model1" style="width: 200px">
+        <Option
+          v-for="item in googsSourceOption"
+          :value="item.value"
+          :key="item.value"
+          >{{ item.label }}</Option
+        >
+      </Select>
+    </div>
+    <div style="padding: 10px; background: #fff; border-bottom: 1px solid #ccc">
+      总重量：xxx 平均重量：xxx 预估利润(￥)：xxx
+    </div>
     <div class="filter__box">
       出货渠道：
       <Input v-model="value" style="width: 200px" />
+      日期选择：<DatePicker type="daterange" placement="bottom-end" placeholder="Select date" style="width: 200px"></DatePicker>
       <Button style="margin-left: 10px">搜索</Button>
       <Button style="margin-left: 10px" type="primary" @click="addItem"
         >新增</Button
@@ -59,6 +74,39 @@
               >{{ item.label }}</Option
             >
           </Select>
+        </FormItem>
+        <FormItem label="物品来源" prop="username">
+          <Select v-model="model1" filterable style="width: 100%">
+            <Option
+              v-for="item in googsSourceOption"
+              :value="item.value"
+              :key="item.value"
+              >{{ item.label }}</Option
+            >
+          </Select>
+        </FormItem>
+        <FormItem label="司机" prop="username">
+          <Select v-model="model1" filterable style="width: 100%">
+            <Option
+              v-for="item in googsSourceOption"
+              :value="item.value"
+              :key="item.value"
+              >{{ item.label }}</Option
+            >
+          </Select>
+        </FormItem>
+        <FormItem label="分拣小组" prop=" username">
+          <Select v-model="model1" filterable style="width: 100%">
+            <Option
+              v-for="item in googsSourceOption"
+              :value="item.value"
+              :key="item.value"
+              >{{ item.label }}</Option
+            >
+          </Select>
+        </FormItem>
+        <FormItem label="时间" prop="username">
+          <DatePicker type="datetime" placeholder="Select date and time" style="width: 200px"></DatePicker>
         </FormItem>
         <Divider orientation="left">织物</Divider>
         <FormItem label="物品A" prop="username">

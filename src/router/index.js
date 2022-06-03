@@ -33,6 +33,26 @@ const routes = [
         path: 'salesman',
         name: 'Salesman',
         component: () => import(/* webpackChunkName: "salesman" */ '../views/salesman/Salesman.vue'), 
+      },
+      {
+        path: 'driverManage',
+        name: 'DriverManage',
+        component: () => import(/* webpackChunkName: "driverManage" */ '../views/driverManage/DriverManage.vue'), 
+      },
+      {
+        path: 'sorterGroupManage',
+        name: 'SorterGroupManage',
+        component: () => import(/* webpackChunkName: "driverManage" */ '../views/sorterGroupManage/SorterGroupManage.vue'), 
+      },
+      {
+        path: 'sorterManage',
+        name: 'StorerManage',
+        component: () => import(/* webpackChunkName: "sorterManage" */ '../views/sorterManage/StorerManage.vue'), 
+      },
+      {
+        path: 'storeManage',
+        name: 'StoreManage',
+        component: () => import(/* webpackChunkName: "StoreManage" */ '../views/storeManage/StoreManage.vue'), 
       }
     ]
   }
